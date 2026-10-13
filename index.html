@@ -51,9 +51,9 @@
                 <button class="menu-btn" style="background:white; color:#1cb0f6; border:2px solid #1cb0f6; box-shadow:0 4px 0 #1cb0f6; margin-top:40px;" onclick="startFlashcards()">🎴 УЧИТЬ КАРТОЧКИ</button>
             </div>
             <div class="bottom-nav">
-                <div class="nav-item active" onclick="showScreen('screen-main')">📚 Обучение</div>
-                <div class="nav-item" onclick="showScreen('screen-prof')">👤 Профиль</div>
-                <div class="nav-item" onclick="showScreen('screen-shop')">🛒 Магазин</div>
+                <div class="nav-item active" onclick="showScreen('screen-main')"><span style="font-size:20px">📚</span><br>Обучение</div>
+                <div class="nav-item" onclick="showScreen('screen-prof')"><span style="font-size:20px">👤</span><br>Профиль</div>
+                <div class="nav-item" onclick="showScreen('screen-shop')"><span style="font-size:20px">🛒</span><br>Магазин</div>
             </div>
         </div>
 
@@ -105,31 +105,8 @@
                 <div class="stat-box" style="flex:1; border:2px solid #e5e5e5; border-radius:16px; padding:16px; text-align:center;"><div style="font-size:24px; font-weight:bold; color:#58cc02;" id="prof-lessons">0</div><div style="color:#777; font-weight:bold; font-size:14px;">Уроки</div></div>
             </div>
             <div class="bottom-nav">
-                <div class="nav-item" onclick="showScreen('screen-main')">📚 Обучение</div>
-                <div class="nav-item active" onclick="showScreen('screen-prof')">👤 Профиль</div>
-                <div class="nav-item" onclick="showScreen('screen-shop')">🛒 Магазин</div>
-            </div>
-        </div>
-
-        <!-- МАГАЗИН -->
-Магазин
-Баланс: 0 XP
-
-❄️Заморозка
-В наличии: 0 шт.
-50 XP
-
-
-🔥Двойной опыт
-Купить бустер
-100 XP
-
-
-📚 Обучение
-👤 Профиль
-🛒 Магазин
-
-
+                <div class="nav-item" onclick="showScreen('screen-main')"><span style="font-size:20px">📚</span><br>Обучение</div>
+                <div class="nav-item active" onclick="showScreen('screen-prof')"><span style="font-size:20px">👤</span><br>Профиль</div>
 const state = { userName: 'Честный Студент', totalXP: 0, currentLevel: 1, completedLessons: 0, streakFreezes: 0, doubleXpActive: false };
 const sourceQuestions = [
 { r: '«Привет, я не использую Дуолинго»', c: ['Hello', 'I', 'do', 'not', 'use', 'Duolingo'], a: ['not', 'Hello', 'Duolingo', 'am', 'I', 'use', 'do'] },
@@ -213,7 +190,7 @@ showScreen('screen-test'); loadTask();
 }
 function loadTask() {
 selectedWords = []; isCorrect = false; document.getElementById('feedback').innerText = '';
-document.getElementById('test-title').innerText = Шаг ${currentTaskIndex + 1} of 7;
+document.getElementById('test-title').innerText = Шаг ${currentTaskIndex + 1} из 7;
 document.getElementById('p-bar').style.width = ${(currentTaskIndex / 7) * 100}%;
 let q = sessionQuestions[currentTaskIndex]; document.getElementById('ru-prompt').innerText = q.r;
 document.getElementById('slots').innerHTML = ''; let pool = document.getElementById('tiles'); pool.innerHTML = '';
