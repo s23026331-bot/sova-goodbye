@@ -105,10 +105,9 @@
                 <div class="stat-box" style="flex:1; border:2px solid #e5e5e5; border-radius:16px; padding:16px; text-align:center;"><div style="font-size:24px; font-weight:bold; color:#58cc02;" id="prof-lessons">0</div><div style="color:#777; font-weight:bold; font-size:14px;">Уроки</div></div>
             </div>
             <div class="bottom-nav">
-                <div class="nav-item" onclick="showScreen('screen-main')"><span style="font-size:20px">📚</span><br>Обучение</div>
-                <div class="nav-item active" onclick="showScreen('screen-prof')"><span style="font-size:20px">👤</span><br>Профиль</div>
-🛒
-Магазин
+                <div class="nav-item" onclick="showScreen('screen-main')">📚 Обучение</div>
+                <div class="nav-item active" onclick="showScreen('screen-prof')">👤 Профиль</div>
+🛒 Магазин
 
 Магазин
 Баланс: 0 XP
@@ -123,12 +122,9 @@
 100 XP
 
 
-📚
-Обучение
-👤
-Профиль
-🛒
-Магазин
+📚 Обучение
+👤 Профиль
+🛒 Магазин
 
 
 const state = { userName: 'Честный Студент', totalXP: 0, currentLevel: 1, completedLessons: 0, streakFreezes: 0, doubleXpActive: false };
@@ -151,7 +147,7 @@ const flashcards = [
 ];
 let leaderboard = [
 { name: 'Анна', xp: 140 }, { name: 'Иван', xp: 90 },
-{ name: 'Alex_Pro', 'xp': 60 }, { name: 'Сова_Убийца', xp: 30 }
+{ name: 'Alex_Pro', xp: 60 }, { name: 'Сова_Убийца', xp: 30 }
 ];
 let giantPool = [];
 for (let i = 0; i < 400; i++) {
@@ -170,7 +166,7 @@ document.querySelectorAll('.name-val').forEach(el => el.innerText = state.userNa
 document.getElementById('comp-lessons').innerText = state.completedLessons;
 document.getElementById('prof-lessons').innerText = state.completedLessons;
 document.getElementById('prof-lvl').innerText = state.currentLevel;
-document.getElementById('shop-freeze').innerText = В наличии: ${state.streakFreezes} шт.;
+document.getElementById('freeze-status').innerText = В наличии: ${state.streakFreezes} шт.;
 document.getElementById('double-status').innerText = state.doubleXpActive ? 'Уже активирован' : 'Удваивает XP';
 document.getElementById('double-btn').disabled = state.doubleXpActive;
 }
@@ -212,7 +208,6 @@ function nextCard() {
 if (cardIndex < flashcards.length - 1) { cardIndex++; loadCard(); }
 else { showScreen('screen-main'); }
 }
-function prevCard() { if (cardIndex > 0) { cardIndex--; loadCard(); } }
 function startLesson() {
 sessionQuestions = []; currentTaskIndex = 0;
 let offset = (state.completedLessons * 7) % 390;
@@ -257,3 +252,4 @@ f.innerText = '🎉 Отлично! Ответ верный!'; f.style.color = '
 document.getElementById('p-bar').style.width = ${((currentTaskIndex + 1) / 7) * 100}%;
 } else { f.innerText = '❌ Неверно, попробуй еще раз!'; f.style.color = '#ea2b2b'; }
 }
+
