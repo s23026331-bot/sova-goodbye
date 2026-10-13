@@ -51,9 +51,9 @@
                 <button class="menu-btn" style="background:white; color:#1cb0f6; border:2px solid #1cb0f6; box-shadow:0 4px 0 #1cb0f6; margin-top:40px;" onclick="startFlashcards()">🎴 УЧИТЬ КАРТОЧКИ</button>
             </div>
             <div class="bottom-nav">
-                <div class="nav-item active" onclick="showScreen('screen-main')"><span style="font-size:20px">📚</span><br>Обучение</div>
-                <div class="nav-item" onclick="showScreen('screen-prof')"><span style="font-size:20px">👤</span><br>Профиль</div>
-                <div class="nav-item" onclick="showScreen('screen-shop')"><span style="font-size:20px">🛒</span><br>Магазин</div>
+                <div class="nav-item active" onclick="showScreen('screen-main')">📚 Обучение</div>
+                <div class="nav-item" onclick="showScreen('screen-prof')">👤 Профиль</div>
+                <div class="nav-item" onclick="showScreen('screen-shop')">🛒 Магазин</div>
             </div>
         </div>
 
@@ -107,149 +107,8 @@
             <div class="bottom-nav">
                 <div class="nav-item" onclick="showScreen('screen-main')">📚 Обучение</div>
                 <div class="nav-item active" onclick="showScreen('screen-prof')">👤 Профиль</div>
-🛒 Магазин
+                <div class="nav-item" onclick="showScreen('screen-shop')">🛒 Магазин</div>
+            </div>
+        </div>
 
-Магазин
-Баланс: 0 XP
-
-❄️Заморозка
-В наличии: 0 шт.
-50 XP
-
-
-🔥Двойной опыт
-Купить бустер
-100 XP
-
-
-📚 Обучение
-👤 Профиль
-🛒 Магазин
-
-
-const state = { userName: 'Честный Студент', totalXP: 0, currentLevel: 1, completedLessons: 0, streakFreezes: 0, doubleXpActive: false };
-const sourceQuestions = [
-{ r: '«Привет, я не использую Дуолинго»', c: ['Hello', 'I', 'do', 'not', 'use', 'Duolingo'], a: ['not', 'Hello', 'Duolingo', 'am', 'I', 'use', 'do'] },
-{ r: '«Я хочу учить языки честно»', c: ['I', 'want', 'to', 'learn', 'languages', 'honestly'], a: ['honestly', 'to', 'languages', 'badly', 'I', 'learn', 'want'] },
-{ r: '«Образование должно быть бесплатным»', c: ['Education', 'must', 'be', 'free'], a: ['free', 'expensive', 'must', 'be', 'Education', 'pay'] },
-{ r: '«Я хочу заказать чашку кофе»', c: ['I', 'want', 'to', 'order', 'a', 'cup', 'of', 'coffee'], a: ['want', 'coffee', 'order', 'cup', 'I', 'to', 'a', 'of', 'tea'] },
-{ r: '«Где находится ближайший отель?»', c: ['Where', 'is', 'the', 'nearest', 'hotel'], a: ['nearest', 'hotel', 'Where', 'is', 'the', 'shop', 'station'] },
-{ r: '«Я изучаю английский язык каждый день»', c: ['I', 'study', 'English', 'every', 'day'], a: ['English', 'study', 'every', 'I', 'day', 'week', 'know'] },
-{ r: '«Приятно познакомиться с вами»', c: ['Nice', 'to', 'meet', 'you'], a: ['meet', 'Nice', 'you', 'to', 'see', 'good'] },
-{ r: '«Сколько стоит этот билет?»', c: ['How', 'much', 'is', 'this', 'ticket'], a: ['much', 'ticket', 'is', 'How', 'this', 'cost', 'that'] },
-{ r: '«Вы можете мне помочь?»', c: ['Can', 'you', 'help', 'me'], a: ['help', 'Can', 'me', 'you', 'do', 'show'] },
-{ r: '«Мне нужен счет, пожалуйста»', c: ['I', 'need', 'the', 'bill', 'please'], a: ['bill', 'please', 'need', 'I', 'the', 'menu', 'food'] }
-];
-const flashcards = [
-{ e: 'Education', r: 'Образование' }, { e: 'Honestly', r: 'Честно / Открыто' },
-{ e: 'Languages', r: 'Языки' }, { e: 'Free', r: 'Бесплатный / Свободный' },
-{ e: 'Delicious', r: 'Вкусный' }, { e: 'Understand', r: 'Понимать' }
-];
-let leaderboard = [
-{ name: 'Анна', xp: 140 }, { name: 'Иван', xp: 90 },
-{ name: 'Alex_Pro', xp: 60 }, { name: 'Сова_Убийца', xp: 30 }
-];
-let giantPool = [];
-for (let i = 0; i < 400; i++) {
-let base = sourceQuestions[i % sourceQuestions.length];
-giantPool.push({ r: ${base.r} (Урок ${i + 1}), c: base.c, a: base.a });
-}
-let sessionQuestions = []; let currentTaskIndex = 0; let selectedWords = []; let isCorrect = false; let cardIndex = 0; let cardFlipped = false;
-function showScreen(id) {
-document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-updateUI();
-}
-function updateUI() {
-document.querySelectorAll('.xp-val').forEach(el => el.innerText = state.totalXP);
-document.querySelectorAll('.name-val').forEach(el => el.innerText = state.userName);
-document.getElementById('comp-lessons').innerText = state.completedLessons;
-document.getElementById('prof-lessons').innerText = state.completedLessons;
-document.getElementById('prof-lvl').innerText = state.currentLevel;
-document.getElementById('freeze-status').innerText = В наличии: ${state.streakFreezes} шт.;
-document.getElementById('double-status').innerText = state.doubleXpActive ? 'Уже активирован' : 'Удваивает XP';
-document.getElementById('double-btn').disabled = state.doubleXpActive;
-}
-function editName() {
-let n = prompt("Введите новый ник:", state.userName);
-if (n && n.trim()) { state.userName = n.trim(); updateUI(); }
-}
-function buyItem(type, cost) {
-if (state.totalXP >= cost) {
-state.totalXP -= cost;
-if (type === 'freeze') state.streakFreezes++;
-if (type === 'double') state.doubleXpActive = true;
-updateUI(); alert("🎉 Успешная покупка!");
-} else { alert("❌ Недостаточно XP!"); }
-}
-function openLeaderboard() {
-showScreen('screen-lb'); let list = document.getElementById('lb-list'); list.innerHTML = '';
-let fullLb = [...leaderboard];
-if (!fullLb.some(u => u.name === state.userName)) fullLb.push({ name: state.userName, xp: state.totalXP });
-else fullLb.forEach(u => { if (u.name === state.userName) u.xp = state.totalXP; });
-fullLb.sort((a, b) => b.xp - a.xp);
-fullLb.forEach((u, i) => {
-let isMe = u.name === state.userName;
-list.innerHTML += <div class="lb-item ${isMe ? 'me' : ''}"><span>${i + 1}. ${u.name}</span><span>${u.xp} XP</span></div>;
-});
-}
-function startFlashcards() { cardIndex = 0; cardFlipped = false; showScreen('screen-cards'); loadCard(); }
-function loadCard() {
-document.getElementById('card-index').innerText = Карточка ${cardIndex + 1} из ${flashcards.length};
-let el = document.getElementById('f-card'); el.innerText = flashcards[cardIndex].e; el.classList.remove('back'); cardFlipped = false;
-document.getElementById('card-next').innerText = cardIndex === flashcards.length - 1 ? 'ВЫХОД' : 'ДАЛЬШЕ';
-}
-function flipCard() {
-let el = document.getElementById('f-card'); cardFlipped = !cardFlipped;
-if (cardFlipped) { el.innerText = flashcards[cardIndex].r; el.classList.add('back'); }
-else { el.innerText = flashcards[cardIndex].e; el.classList.remove('back'); }
-}
-function nextCard() {
-if (cardIndex < flashcards.length - 1) { cardIndex++; loadCard(); }
-else { showScreen('screen-main'); }
-}
-function startLesson() {
-sessionQuestions = []; currentTaskIndex = 0;
-let offset = (state.completedLessons * 7) % 390;
-for (let i = 0; i < 7; i++) sessionQuestions.push(giantPool[offset + i]);
-showScreen('screen-test'); loadTask();
-}
-function loadTask() {
-selectedWords = []; isCorrect = false; document.getElementById('feedback').innerText = '';
-document.getElementById('test-title').innerText = Шаг ${currentTaskIndex + 1} из 7;
-document.getElementById('p-bar').style.width = ${(currentTaskIndex / 7) * 100}%;
-let q = sessionQuestions[currentTaskIndex]; document.getElementById('ru-prompt').innerText = q.r;
-document.getElementById('slots').innerHTML = ''; let pool = document.getElementById('tiles'); pool.innerHTML = '';
-let shuff = [...q.a].sort(() => Math.random() - 0.5);
-shuff.forEach((w, idx) => { pool.innerHTML += <button class="tile" id="tile-${idx}" onclick="selectWord('${w}', ${idx})">${w}</button>; });
-let btn = document.getElementById('check-btn'); btn.innerText = 'ПРОВЕРИТЬ ОТВЕТ'; btn.disabled = true;
-}
-function selectWord(w, idx) {
-if (isCorrect) return;
-let tile = document.getElementById(tile-${idx});
-if (tile.classList.contains('used')) {
-tile.classList.remove('used'); selectedWords = selectedWords.filter(x => x.id !== idx);
-} else {
-tile.classList.add('used'); selectedWords.push({ text: w, id: idx });
-}
-let slots = document.getElementById('slots'); slots.innerHTML = '';
-selectedWords.forEach(x => { slots.innerHTML += <button class="tile" onclick="selectWord('${x.text}', ${x.id})">${x.text}</button>; });
-document.getElementById('check-btn').disabled = selectedWords.length === 0;
-}
-function checkAnswer() {
-let btn = document.getElementById('check-btn');
-if (isCorrect) {
-if (currentTaskIndex < 6) { currentTaskIndex++; loadTask(); }
-else { state.completedLessons++; state.totalXP += state.doubleXpActive ? 30 : 15; state.currentLevel = Math.floor(state.totalXP / 150) + 1; alert("🎉 Урок полностью пройден!"); showScreen('screen-main'); }
-return;
-}
-let q = sessionQuestions[currentTaskIndex];
-let ans = selectedWords.map(x => x.text).join(' ');
-let right = q.c.join(' ');
-let f = document.getElementById('feedback');
-if (ans === right) {
-f.innerText = '🎉 Отлично! Ответ верный!'; f.style.color = '#58cc02'; isCorrect = true; btn.innerText = 'ПРОДОЛЖИТЬ';
-document.getElementById('p-bar').style.width = ${((currentTaskIndex + 1) / 7) * 100}%;
-} else { f.innerText = '❌ Неверно, попробуй еще раз!'; f.style.color = '#ea2b2b'; }
-}
-
+        <!-- МАГАЗИН -->
